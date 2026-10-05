@@ -34,6 +34,20 @@ The blind scan recovers an abrupt change in how infant deaths are classified as 
 Choosing the context by regime cuts log-loss by 14% and restores calibration, with no retraining. Ranking (AUC ≈ 0.5 inside the
 post-break group) does not improve: the post-break labels are not predictable from age/sex/zone at all.
 
+### The population changed at the same time
+`composition_shift` compares annualised group sizes around the break (deaths per year, 2009 onward, Train.csv):
+
+| age group | deaths/yr before | after | ratio | share before → after |
+|---|---|---|---|---|
+| age 0 | 68.9 | 90.8 | **1.32x** | 26% → 64% |
+| age 1-4 | 63.6 | 10.9 | **0.17x** | 24% → 8% |
+| age 15-49 | 49.8 | 14.9 | 0.30x | 19% → 10% |
+| age 50+ | 74.5 | 19.4 | 0.26x | 28% → 14% |
+
+So the label break coincides with a change of *who is in the data* (mostly infants after mid-2017), not only a change of coding rule.
+Read it as evidence for a change of data source or instrument, which is why the post-break infant label is close to a coin flip for
+age/sex/zone/season features (within-group AUC about 0.5).
+
 ## Quick start
 ```bash
 git clone https://github.com/sashishjha/tabpfn_regime_audit && cd tabpfn_regime_audit

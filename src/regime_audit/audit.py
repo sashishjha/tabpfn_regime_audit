@@ -138,3 +138,21 @@ def context_ablation(df, target, time_col, feature_cols, break_date, eval_mask, 
                          brier=brier_score_loss(y[m], p[m]), auc=roc_auc_score(y[m], p[m]) if len(set(y[m])) > 1 else float("nan"),
                          mean_pred=float(p[m].mean()), mean_label=float(y[m].mean())))
     return pd.DataFrame(rows)
+
+
+def composition_shift(df: pd.DataFrame, time_col: str, break_date, group_col: str, bins=None, start=None):
+    """Did the *population* change at the break as well as the labels? Annualised counts per group before vs after the break.
+    A label-rate break that coincides with a collapse/surge in group sizes points to a change of data source, not only of coding."""
+    t = pd.to_datetime(df[time_col])
+    b = pd.Timestamp(break_date)
+    start = pd.Timestamp(start) if start is not None else t.min()
+    years_pre = max((b - start).days / 365.25, 1e-9)
+    years_post = max((t.max() - b).days / 365.25, 1e-9)
+    g = pd.cut(df[group_col], bins) if bins is not None else df[group_col]
+    pre = g[(t < b) & (t >= start)].value_counts().sort_index()
+    post = g[t >= b].value_counts().reindex(pre.index).fillna(0)
+    out = pd.DataFrame({"per_year_before": pre / years_pre, "per_year_after": post / years_post})
+    out["ratio_after_over_before"] = out.per_year_after / out.per_year_before
+    out["share_before"] = pre / pre.sum()
+    out["share_after"] = post / post.sum()
+    return out

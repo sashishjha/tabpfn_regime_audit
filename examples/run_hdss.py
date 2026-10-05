@@ -19,3 +19,10 @@ top = next(f for f in findings if f.subgroup.startswith("0<=age"))
 res = context_ablation(df, "is_climate_sensitive", "deathdate", ["age", "male", "rural"], top.date, eval_mask=(df.age < 3).to_numpy(), group_col="location")
 print(f"\nContext ablation on children <3 y after {top.date.date()}:")
 print(res.round(3).to_string(index=False))
+
+# Did the population change at the same time?
+from regime_audit import composition_shift
+cs = composition_shift(df, "deathdate", top.date, "age", bins=[-1, 0, 4, 14, 49, 200], start="2009-01-01")
+cs.index = ["age 0", "age 1-4", "age 5-14", "age 15-49", "age 50+"]
+print(f"\nComposition shift around {top.date.date()} (deaths per year, 2009 onward):")
+print(cs.round(2).to_string())
