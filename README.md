@@ -34,6 +34,17 @@ The blind scan recovers an abrupt change in how infant deaths are classified as 
 Choosing the context by regime cuts log-loss by 14% and restores calibration, with no retraining. Ranking (AUC ≈ 0.5 inside the
 post-break group) does not improve: the post-break labels are not predictable from age/sex/zone at all.
 
+![regime audit on the HDSS data](results/figure_regime.png)
+
+### Robustness
+* **Seeds (5 different fold/model seeds):** the top finding (age < 1) is identical in all five runs, z = −17.5. Fold seeds barely move an
+  infant-only residual, so this is a sanity check, not a confidence interval.
+* **Bootstrap (resampling the 1,112 infant rows, 500 draws, `examples/bootstrap_break_date.py`):** break date median 2017-06-06,
+  **90% interval 2016-10-04 to 2018-04-08**. The labelling change is certain (z = −17.5) but the exact day is not: there are only 32 infant
+  deaths recorded in 2017, so the data are sparse around the break. Quote "mid-2017", not a precise date.
+* **Context ablation over 5 seeds** (held-out locations, children < 3 y after the break): log-loss all rows 0.786 ± 0.007,
+  **post-break rows only 0.676 ± 0.007**, pre-break rows only 1.457 ± 0.009; mean prediction 0.801 / 0.601 / 0.966 against a true rate of 0.586.
+
 ### The population changed at the same time
 `composition_shift` compares annualised group sizes around the break (deaths per year, 2009 onward, Train.csv):
 

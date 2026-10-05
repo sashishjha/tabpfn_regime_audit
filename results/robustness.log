@@ -1,0 +1,14 @@
+seed 0: break 2017-06-06 0.97->0.56 z=-17.5
+seed 1: break 2017-06-06 0.97->0.56 z=-17.5
+seed 2: break 2017-06-06 0.97->0.56 z=-17.5
+seed 3: break 2017-06-06 0.97->0.56 z=-17.5
+seed 4: break 2017-06-06 0.97->0.56 z=-17.5
+
+break date over 5 seeds: 2017-06-06 .. 2017-06-06 (median 2017-06-06); z = -17.5 +/- 0.0
+                logloss         brier        mean_pred       
+                   mean    std   mean    std      mean    std
+context                                                      
+all rows          0.786  0.007  0.285  0.002     0.801  0.004
+post-break only   0.676  0.007  0.242  0.003     0.601  0.012
+pre-break only    1.457  0.009  0.389  0.000     0.966  0.000
+saved results/figure_regime.png
