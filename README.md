@@ -36,7 +36,7 @@ post-break group) does not improve: the post-break labels are not predictable fr
 
 ## Quick start
 ```bash
-git clone https://github.com/sashishjha/tabpfn-regime-audit && cd tabpfn-regime-audit
+git clone https://github.com/sashishjha/tabpfn_regime_audit && cd tabpfn_regime_audit
 uv sync                                   # Python >= 3.12 (installs the package in editable mode)
 export TABPFN_TOKEN=...                   # one-time TabPFN licence acceptance, see https://ux.priorlabs.ai
 PYTHONPATH=src uv run python examples/run_synthetic.py        # no data needed: planted break is recovered
